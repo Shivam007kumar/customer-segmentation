@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Transaction Analysis Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 56px auto 0 auto;
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 10px 40px rgba(44,62,80,0.14);
+            padding: 52px 42px 36px 42px;
+            text-align: center;
+            opacity: 0;
+            transform: rotateX(-15deg) translateY(40px) scale(0.98);
+            animation: fadeInContainer 1.2s cubic-bezier(.39,.58,.57,1.09) forwards;
+        }
+        @keyframes fadeInContainer {
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        h1 {
+            color: #202436;
+            margin-bottom: 12px;
+            font-size: 2.3rem;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+        .subtitle {
+            color: #4a566b;
+            font-size: 1.12rem;
+            margin-bottom: 35px;
+        }
+        .cards {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            margin-bottom: 44px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: #f4f7fa;
+            border-radius: 16px;
+            box-shadow: 0 2px 14px rgba(25, 118, 210, 0.06);
+            padding: 26px 28px 18px 28px;
+            min-width: 170px;
+            flex: 1 1 180px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+            will-change: transform;
+            opacity: 0;
+            animation: popCard 1.2s cubic-bezier(.6,.35,.34,1.24) forwards;
+        }
+        .card:nth-child(1){animation-delay:0.18s;}
+        .card:nth-child(2){animation-delay:0.34s;}
+        .card:nth-child(3){animation-delay:0.50s;}
+        @keyframes popCard {
+            0% {transform: translateY(40px) scale(.9); opacity:0;}
+            80% {transform: translateY(-6px) scale(1.04); opacity:1;}
+            100% {transform: none; opacity:1;}
+        }
+        .card:hover, .card:focus {
+            transform: scale(1.055) translateY(-6px) rotateZ(-1deg);
+            box-shadow: 0 6px 28px rgba(25, 118, 210, 0.17);
+        }
+        .card-title {
+            color: #1976d2;
+            font-size: 1.08rem;
+            font-weight: 600;
+            margin-bottom: 13px;
+            letter-spacing: 0.03em;
+        }
+        .card-value {
+            color: #202436;
+            font-size: 1.53rem;
+            font-weight: 700;
+            white-space: nowrap;
+            letter-spacing: 0.01em;
+            animation: slideInNum 0.8s .2s cubic-bezier(.51,.81,.83,1.73) backwards;
+        }
+        @keyframes slideInNum {
+            from { opacity:0; transform: translateY(18px) scale(.98);}
+            to { opacity:1; transform: none;}
+        }
+        nav {
+            margin-bottom: 34px;
+        }
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+        .nav-btn {
+            flex: 1 1 210px;
+            background: linear-gradient(90deg,#e3f0fd 60%,#f1f3f6 100%);
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 1.09rem;
+            border-radius: 10px;
+            padding: 15px 0;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(25, 118, 210, 0.05);
+            transition: background 0.26s, color 0.2s, transform 0.16s;
+            display: block;
+            position: relative;
+        }
+        .nav-btn:after {
+            content: '→';
+            position: absolute;
+            right: 26px;
+            opacity: 0.4;
+            font-size: 1.27rem;
+            transition: right .2s, opacity .2s;
+        }
+        .nav-btn:hover,
+        .nav-btn:focus {
+            background: #1976d2;
+            color: #fff;
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 6px 28px rgba(25, 118, 210, 0.13);
+        }
+        .nav-btn:hover:after,
+        .nav-btn:focus:after {
+            right: 14px;
+            opacity: 0.85;
+        }
+        .highlights {
+            background: #f6fbff;
+            border-radius: 14px;
+            margin: 0 auto;
+            margin-top: 28px;
+            padding: 20px 28px 16px 36px;
+            text-align: left;
+            max-width: 480px;
+            box-shadow: 0 1px 11px rgba(60,60,80,0.04);
+            opacity: 0;
+            animation: fadeInHighlights 1s .7s ease forwards;
+        }
+        @keyframes fadeInHighlights {
+            to { opacity:1; }
+        }
+        .highlights-title {
+            color: #1976d2;
+            font-size: 1.07rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .highlights ul {
+            margin: 0 0 0 15px;
+            padding: 0;
+            color: #33415c;
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+        @media (max-width: 900px) {
+            .container {
+                max-width: 99vw;
+                padding: 20px 4vw 20px 4vw;
+            }
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px 2vw 16px 2vw;
+            }
+            .cards {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .highlights {
+                padding: 14px 10px 9px 20px;
+                max-width: 99vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer" tabindex="0" aria-label="Transaction Analysis Dashboard Homepage">
+        <h1>Transaction Analysis Dashboard</h1>
+        <div class="subtitle" aria-live="polite">
+            Visualize and explore consumer spending patterns.
+        </div>
+        <div class="cards" role="region" aria-label="Key metrics">
+            <div class="card" tabindex="0" role="article" aria-labelledby="totalSpendTitle totalSpendValue">
+                <div class="card-title" id="totalSpendTitle">Total Spend</div>
+                <div class="card-value" id="totalSpendValue">$166,940,344.22</div>
+            </div>
+            <div class="card" tabindex="0" role="article" aria-labelledby="totalTransTitle totalTransValue">
+                <div class="card-title" id="totalTransTitle">Total Transactions</div>
+                <div class="card-value" id="totalTransValue">  13,305,915</div>
+            </div>
+            <div class="card" tabindex="0" role="article" aria-labelledby="avgTransTitle avgTransValue">
+                <div class="card-title" id="avgTransTitle">Avg. Transaction Value</div>
+                <div class="card-value" id="avgTransValue">$42.98</div>
+            </div>
+        </div>
+        <nav aria-label="Dashboard navigation">
+            <div class="nav-buttons">
+                <a class="nav-btn" href="category_summary_plot.html" role="link" aria-label="Go to Category Summary">Category Summary</a>
+                <a class="nav-btn" href="state_summary_plot.html" role="link" aria-label="Go to State Summary">State Summary</a>
+                <a class="nav-btn" href="error_summary_plot.html" role="link" aria-label="Go to Error Summary">Error Summary</a>
+                <a class="nav-btn" href="merchant_summary_plot.html" role="link" aria-label="Go to Merchant Summary">Merchant Summary</a>
+            </div>
+        </nav>
+        <section class="highlights" aria-label="Quick insights and highlights">
+            <div class="highlights-title">Quick Highlights</div>
+            <ul>
+                <li>Top spending in <b>Money Transfer</b> category</li>
+                <li>Most errors are <b>Insufficient Balance Errors</b></li>
+                <li>Peak activity on <b>weekends</b></li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
