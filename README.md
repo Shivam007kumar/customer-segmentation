@@ -1,5 +1,13 @@
 # 🧮 PySpark Transaction Data Analysis
 
+
+## 🌐 Live Dashboard
+
+👉 [Click here to view the interactive report](https://shivam007kumar.github.io/dashboard/index.html)
+
+This opens the `index.html` file as a static webpage hosted via GitHub Pages.
+
+
 **Project Objective**  
 This project performs a large-scale analysis of customer transaction data using Apache Spark's Python API, **PySpark**. It processes, cleans, and analyzes over **13 million transactions** to uncover patterns in consumer behavior, geographic trends, and transaction errors.
 
